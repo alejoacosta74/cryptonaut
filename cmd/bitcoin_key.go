@@ -60,10 +60,18 @@ func runCreateKey(cmd *cobra.Command, args []string) error {
 	switch format {
 	case "wif":
 		compressed := viper.GetBool("compressed")
-		privKey := bitcoin.GeneratePrivateKeyWIF(testnet, compressed)
+		privKey, err := bitcoin.GeneratePrivateKeyWIF(testnet, compressed)
+		if err != nil {
+			cmd.PrintErrln(err)
+			return err
+		}
 		result = privKey.String()
 	case "hex":
-		privKey := bitcoin.GeneratePrivateKeyHex()
+		privKey, err := bitcoin.GeneratePrivateKeyHex()
+		if err != nil {
+			cmd.PrintErrln(err)
+			return err
+		}
 		result = hex.EncodeToString(privKey.Serialize())
 	default:
 		return fmt.Errorf("invalid format: %s", format)

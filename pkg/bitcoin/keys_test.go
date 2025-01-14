@@ -32,7 +32,7 @@ func TestBitcoinKeys(t *testing.T) {
 			// Test ConvertKey from hex to WIF
 			wifStr, err := ConvertKey(tc.privateKeyHex)
 			if err != nil {
-				t.Errorf("ConvertKey(hex) failed: %v", err)
+				t.Fatalf("ConvertKey(hex) failed: %v", err)
 			}
 			if wifStr != tc.privateKeyWIF {
 				t.Errorf("ConvertKey(hex) = %v, want %v", wifStr, tc.privateKeyWIF)
@@ -41,27 +41,36 @@ func TestBitcoinKeys(t *testing.T) {
 			// Test ConvertKey from WIF to hex
 			hexStr, err := ConvertKey(tc.privateKeyWIF)
 			if err != nil {
-				t.Errorf("ConvertKey(WIF) failed: %v", err)
+				t.Fatalf("ConvertKey(WIF) failed: %v", err)
 			}
 			if hexStr != tc.privateKeyHex {
 				t.Errorf("ConvertKey(WIF) = %v, want %v", hexStr, tc.privateKeyHex)
 			}
 
 			// Test GenerateAddress with hex input
-			addr := GenerateAddress(tc.privateKeyHex, tc.isTestnet)
+			addr, err := GenerateAddress(tc.privateKeyHex, tc.isTestnet)
+			if err != nil {
+				t.Fatalf("GenerateAddress(hex) failed: %v", err)
+			}
 			if addr != tc.address {
 				t.Errorf("GenerateAddress(hex) = %v, want %v", addr, tc.address)
 			}
 
 			// Test GenerateAddress with WIF input
-			addr = GenerateAddress(tc.privateKeyWIF, tc.isTestnet)
+			addr, err = GenerateAddress(tc.privateKeyWIF, tc.isTestnet)
+			if err != nil {
+				t.Fatalf("GenerateAddress(WIF) failed: %v", err)
+			}
 			if addr != tc.address {
 				t.Errorf("GenerateAddress(WIF) = %v, want %v", addr, tc.address)
 			}
 
 			// Test DerivePublicKey
 			wif, _ := btcutil.DecodeWIF(tc.privateKeyWIF)
-			pubKey := DerivePublicKey(wif)
+			pubKey, err := DerivePublicKey(wif)
+			if err != nil {
+				t.Fatalf("DerivePublicKey failed: %v", err)
+			}
 			expectedPrivKey, _ := hex.DecodeString(tc.privateKeyHex)
 			expectedKey, _ := btcec.PrivKeyFromBytes(btcec.S256(), expectedPrivKey)
 			expectedPubKey := expectedKey.PubKey().SerializeCompressed()
@@ -75,11 +84,13 @@ func TestBitcoinKeys(t *testing.T) {
 // TestGeneratePrivateKey tests the key generation functions
 func TestGeneratePrivateKey(t *testing.T) {
 	t.Run("generate hex private key", func(t *testing.T) {
-		privKey := GeneratePrivateKeyHex()
+		privKey, err := GeneratePrivateKeyHex()
+		if err != nil {
+			t.Fatalf("GeneratePrivateKeyHex failed: %v", err)
+		}
 		if privKey == nil {
 			t.Error("GeneratePrivateKeyHex returned nil")
 		}
-		// Verify the key is valid by checking if serialization works
 		if len(privKey.Serialize()) != 32 {
 			t.Error("Generated invalid private key")
 		}
@@ -99,7 +110,10 @@ func TestGeneratePrivateKey(t *testing.T) {
 
 		for _, tc := range testCases {
 			t.Run(tc.name, func(t *testing.T) {
-				wif := GeneratePrivateKeyWIF(tc.testnet, tc.compressed)
+				wif, err := GeneratePrivateKeyWIF(tc.testnet, tc.compressed)
+				if err != nil {
+					t.Fatalf("GeneratePrivateKeyWIF failed: %v", err)
+				}
 				if wif == nil {
 					t.Error("GeneratePrivateKeyWIF returned nil")
 				}

@@ -17,15 +17,16 @@ var bitcoinAddressCmd = &cobra.Command{
 	Long: `Generate Bitcoin addresses from private keys.
     
 `,
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		fmt.Println("keys called")
+		return nil
 	},
 }
 
 var createAddressCmd = &cobra.Command{
 	Use:   "create",
 	Short: "Create a new Bitcoin address from a private key",
-	Run:   runCreateAddressCmd,
+	RunE:  runCreateAddressCmd,
 }
 
 func init() {
@@ -38,10 +39,14 @@ func init() {
 
 }
 
-func runCreateAddressCmd(cmd *cobra.Command, args []string) {
+func runCreateAddressCmd(cmd *cobra.Command, args []string) error {
 	testnet := viper.GetBool("testnet")
 	privKey := viper.GetString("from-key")
-	address := bitcoin.GenerateAddress(privKey, testnet)
+	address, err := bitcoin.GenerateAddress(privKey, testnet)
+	if err != nil {
+		cmd.PrintErrln(err)
+		return err
+	}
 	cmd.Printf("Address: %s\n", address)
-
+	return nil
 }

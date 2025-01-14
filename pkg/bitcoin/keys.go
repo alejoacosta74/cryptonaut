@@ -5,35 +5,36 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/alejoacosta74/go-logger"
-
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcutil"
 )
 
-func GeneratePrivateKeyHex() *btcec.PrivateKey {
+func GeneratePrivateKeyHex() (*btcec.PrivateKey, error) {
 	privKey, err := btcec.NewPrivateKey(btcec.S256())
 	if err != nil {
-		logger.Fatalf("Failed to create private key: %v", err)
+		return nil, fmt.Errorf("failed to create private key: %v", err)
 	}
-	return privKey
+	return privKey, nil
 }
 
-func GeneratePrivateKeyWIF(testnet, compressed bool) *btcutil.WIF {
-	privKey := GeneratePrivateKeyHex()
+func GeneratePrivateKeyWIF(testnet, compressed bool) (*btcutil.WIF, error) {
+	privKey, err := GeneratePrivateKeyHex()
+	if err != nil {
+		return nil, err
+	}
 	net := getChainParams(testnet)
 	privKeyWIF, err := btcutil.NewWIF(privKey, net, compressed)
 	if err != nil {
-		logger.Fatalf("Failed to create private key: %v", err)
+		return nil, fmt.Errorf("failed to create private key: %v", err)
 	}
-	return privKeyWIF
+	return privKeyWIF, nil
 }
 
-func DerivePublicKey(wif *btcutil.WIF) []byte {
-	return wif.PrivKey.PubKey().SerializeCompressed()
+func DerivePublicKey(wif *btcutil.WIF) ([]byte, error) {
+	return wif.PrivKey.PubKey().SerializeCompressed(), nil
 }
 
-func GenerateAddress(privKey string, testnet bool) string {
+func GenerateAddress(privKey string, testnet bool) (string, error) {
 	net := getChainParams(testnet)
 	var key *btcec.PrivateKey
 
@@ -44,14 +45,14 @@ func GenerateAddress(privKey string, testnet bool) string {
 		b, _ := hex.DecodeString(strings.TrimPrefix(privKey, "0x"))
 		key, _ = btcec.PrivKeyFromBytes(btcec.S256(), b)
 	} else {
-		logger.Fatal("Invalid private key format. Must be WIF or hex.")
+		return "", fmt.Errorf("invalid private key format (must be WIF or hex)")
 	}
 
 	addr, err := btcutil.NewAddressPubKey(key.PubKey().SerializeCompressed(), net)
 	if err != nil {
-		logger.Fatalf("Failed to generate address: %v", err)
+		return "", fmt.Errorf("failed to generate address: %v", err)
 	}
-	return addr.EncodeAddress()
+	return addr.EncodeAddress(), nil
 }
 
 func ConvertKey(privKey string) (string, error) {
