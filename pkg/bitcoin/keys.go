@@ -30,7 +30,7 @@ func GeneratePrivateKeyWIF(testnet, compressed bool) (*btcutil.WIF, error) {
 	return privKeyWIF, nil
 }
 
-func DerivePublicKey(wif *btcutil.WIF) ([]byte, error) {
+func GeneratePublicKey(wif *btcutil.WIF) ([]byte, error) {
 	return wif.PrivKey.PubKey().SerializeCompressed(), nil
 }
 

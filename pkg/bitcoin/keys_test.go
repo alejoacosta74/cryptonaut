@@ -67,7 +67,7 @@ func TestBitcoinKeys(t *testing.T) {
 
 			// Test DerivePublicKey
 			wif, _ := btcutil.DecodeWIF(tc.privateKeyWIF)
-			pubKey, err := DerivePublicKey(wif)
+			pubKey, err := GeneratePublicKey(wif)
 			if err != nil {
 				t.Fatalf("DerivePublicKey failed: %v", err)
 			}

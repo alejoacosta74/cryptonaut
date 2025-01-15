@@ -1,4 +1,4 @@
-package hdwallet
+package crypto
 
 type DerivationIndex uint32
 

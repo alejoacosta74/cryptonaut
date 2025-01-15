@@ -1,8 +1,9 @@
-package hdwallet
+package bitcoin
 
 import (
 	"fmt"
 
+	"github.com/alejoacosta74/cryptonaut/pkg/crypto"
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/btcsuite/btcutil"
@@ -31,25 +32,25 @@ func CreateHDNode(mnemonic string, network *chaincfg.Params) (*hdkeychain.Extend
 	const HardenedOffset uint32 = hdkeychain.HardenedKeyStart
 
 	// Derive 44' (Purpose)
-	purposeKey, err := masterKey.Child(PurposePath.ToUint32() + HardenedOffset)
+	purposeKey, err := masterKey.Child(crypto.PurposePath.ToUint32() + HardenedOffset)
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive purpose key: %v", err)
 	}
 
 	// Derive 0' (Coin type for Bitcoin)
-	coinTypeKey, err := purposeKey.Child(BitcoinCoinTypePath.ToUint32() + HardenedOffset)
+	coinTypeKey, err := purposeKey.Child(crypto.BitcoinCoinTypePath.ToUint32() + HardenedOffset)
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive coin type key: %v", err)
 	}
 
 	// Derive 0' (Account)
-	accountKey, err := coinTypeKey.Child(AccountPath.ToUint32() + HardenedOffset)
+	accountKey, err := coinTypeKey.Child(crypto.AccountPath.ToUint32() + HardenedOffset)
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive account key: %v", err)
 	}
 
 	// Derive 0 (External chain)
-	chainKey, err := accountKey.Child(ChainPath.ToUint32())
+	chainKey, err := accountKey.Child(crypto.ChainPath.ToUint32())
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive chain key: %v", err)
 	}
@@ -57,7 +58,7 @@ func CreateHDNode(mnemonic string, network *chaincfg.Params) (*hdkeychain.Extend
 	return chainKey, nil
 }
 
-func DerivePrivateKey(hdNode *hdkeychain.ExtendedKey, index DerivationIndex) (*btcec.PrivateKey, error) {
+func DerivePrivateKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex) (*btcec.PrivateKey, error) {
 	// derive the child key at the given index
 	child, err := hdNode.Child(index.ToUint32())
 	if err != nil {
@@ -73,7 +74,7 @@ func DerivePrivateKey(hdNode *hdkeychain.ExtendedKey, index DerivationIndex) (*b
 	return privKey, nil
 }
 
-func DerivePublicKey(hdNode *hdkeychain.ExtendedKey, index DerivationIndex) (*btcec.PublicKey, error) {
+func DerivePublicKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex) (*btcec.PublicKey, error) {
 	child, err := hdNode.Child(index.ToUint32())
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive child for index %d: %v", index, err)
@@ -87,7 +88,7 @@ func DerivePublicKey(hdNode *hdkeychain.ExtendedKey, index DerivationIndex) (*bt
 	return pubKey, nil
 }
 
-func DeriveAddress(hdNode *hdkeychain.ExtendedKey, index DerivationIndex, network *chaincfg.Params) (*btcutil.AddressPubKeyHash, error) {
+func DeriveAddress(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex, network *chaincfg.Params) (*btcutil.AddressPubKeyHash, error) {
 	child, err := hdNode.Child(index.ToUint32())
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive child for index %d: %v", index, err)
