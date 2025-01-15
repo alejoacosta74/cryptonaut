@@ -8,9 +8,8 @@ import (
 	"fmt"
 
 	"github.com/alejoacosta74/cryptonaut/internal/config"
-	"github.com/alejoacosta74/cryptonaut/pkg/bitcoin"
+	"github.com/alejoacosta74/cryptonaut/pkg/bip44"
 	"github.com/alejoacosta74/cryptonaut/pkg/crypto"
-	"github.com/alejoacosta74/cryptonaut/pkg/ethereum"
 	"github.com/btcsuite/btcd/chaincfg"
 	"github.com/spf13/cobra"
 )
@@ -99,23 +98,23 @@ func runDeriveBitcoinKeysCmd(cmd *cobra.Command, args []string) error {
 	} else {
 		network = &chaincfg.MainNetParams
 	}
-	hdNode, err := bitcoin.CreateHDNode(mnemonic, network)
+	hdNode, err := bip44.CreateBitcoinHDNode(mnemonic, network)
 	if err != nil {
 		return fmt.Errorf("failed to create hdnode: %v", err)
 	}
 
-	privKey, err := bitcoin.DerivePrivateKey(hdNode, crypto.DerivationIndex(index))
+	privKey, err := bip44.DeriveBitcoinPrivateKey(hdNode, crypto.DerivationIndex(index))
 	if err != nil {
 		cmd.PrintErrf("failed to derive private key: %v", err)
 		return err
 	}
 
-	pubKey, err := bitcoin.DerivePublicKey(hdNode, crypto.DerivationIndex(index))
+	pubKey, err := bip44.DeriveBitcoinPublicKey(hdNode, crypto.DerivationIndex(index))
 	if err != nil {
 		cmd.PrintErrf("failed to derive public key: %v", err)
 		return err
 	}
-	address, err := bitcoin.DeriveAddress(hdNode, crypto.DerivationIndex(index), network)
+	address, err := bip44.DeriveBitcoinAddress(hdNode, crypto.DerivationIndex(index), network)
 	if err != nil {
 		cmd.PrintErrf("failed to derive address: %v", err)
 		return err
@@ -138,22 +137,22 @@ func runDeriveEthereumKeysCmd(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get index: %v", err)
 	}
 
-	hdNode, err := ethereum.CreateHDNode(mnemonic)
+	hdNode, err := bip44.CreateEthereumHDNode(mnemonic)
 	if err != nil {
 		return fmt.Errorf("failed to create hdnode: %v", err)
 	}
 
-	privKey, err := ethereum.DerivePrivateKey(hdNode, uint32(index))
+	privKey, err := bip44.DeriveEthereumPrivateKey(hdNode, uint32(index))
 	if err != nil {
 		return fmt.Errorf("failed to derive private key: %v", err)
 	}
 
-	pubKey, err := ethereum.DerivePublicKey(hdNode, uint32(index))
+	pubKey, err := bip44.DeriveEthereumPublicKey(hdNode, uint32(index))
 	if err != nil {
 		return fmt.Errorf("failed to derive public key: %v", err)
 	}
 
-	address := ethereum.GetAddress(pubKey)
+	address := bip44.DeriveEthereumAddress(pubKey)
 
 	cmd.Println("Private Key:", hex.EncodeToString(privKey.D.Bytes()))
 	cmd.Println("Public Key:", hex.EncodeToString(pubKey.X.Bytes()))

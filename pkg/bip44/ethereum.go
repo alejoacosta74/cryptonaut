@@ -1,4 +1,4 @@
-package ethereum
+package bip44
 
 import (
 	"crypto/ecdsa"
@@ -11,7 +11,7 @@ import (
 )
 
 // CreateHDNode creates a new HD node for Ethereum from a mnemonic
-func CreateHDNode(mnemonic string) (*bip32.Key, error) {
+func CreateEthereumHDNode(mnemonic string) (*bip32.Key, error) {
 	// validate the mnemonic
 	if !bip39.IsMnemonicValid(mnemonic) {
 		return nil, fmt.Errorf("invalid mnemonic: '%s'", mnemonic)
@@ -57,7 +57,7 @@ func CreateHDNode(mnemonic string) (*bip32.Key, error) {
 }
 
 // DerivePrivateKey derives a private key at a specific index
-func DerivePrivateKey(changeKey *bip32.Key, index uint32) (*ecdsa.PrivateKey, error) {
+func DeriveEthereumPrivateKey(changeKey *bip32.Key, index uint32) (*ecdsa.PrivateKey, error) {
 	addressKey, err := changeKey.NewChildKey(index)
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive address key: %v", err)
@@ -72,8 +72,8 @@ func DerivePrivateKey(changeKey *bip32.Key, index uint32) (*ecdsa.PrivateKey, er
 }
 
 // DerivePublicKey gets the public key from a private key
-func DerivePublicKey(changeKey *bip32.Key, index uint32) (*ecdsa.PublicKey, error) {
-	privateKey, err := DerivePrivateKey(changeKey, index)
+func DeriveEthereumPublicKey(changeKey *bip32.Key, index uint32) (*ecdsa.PublicKey, error) {
+	privateKey, err := DeriveEthereumPrivateKey(changeKey, index)
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive private key: %v", err)
 	}
@@ -87,6 +87,6 @@ func DerivePublicKey(changeKey *bip32.Key, index uint32) (*ecdsa.PublicKey, erro
 }
 
 // GetAddress derives Ethereum address from public key
-func GetAddress(publicKey *ecdsa.PublicKey) common.Address {
+func DeriveEthereumAddress(publicKey *ecdsa.PublicKey) common.Address {
 	return crypto.PubkeyToAddress(*publicKey)
 }

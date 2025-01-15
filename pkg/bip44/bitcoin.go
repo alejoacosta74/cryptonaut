@@ -1,4 +1,4 @@
-package bitcoin
+package bip44
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"github.com/tyler-smith/go-bip39"
 )
 
-func CreateHDNode(mnemonic string, network *chaincfg.Params) (*hdkeychain.ExtendedKey, error) {
+func CreateBitcoinHDNode(mnemonic string, network *chaincfg.Params) (*hdkeychain.ExtendedKey, error) {
 
 	// validate the mnemonic
 	if !bip39.IsMnemonicValid(mnemonic) {
@@ -58,7 +58,7 @@ func CreateHDNode(mnemonic string, network *chaincfg.Params) (*hdkeychain.Extend
 	return chainKey, nil
 }
 
-func DerivePrivateKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex) (*btcec.PrivateKey, error) {
+func DeriveBitcoinPrivateKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex) (*btcec.PrivateKey, error) {
 	// derive the child key at the given index
 	child, err := hdNode.Child(index.ToUint32())
 	if err != nil {
@@ -74,7 +74,7 @@ func DerivePrivateKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationInd
 	return privKey, nil
 }
 
-func DerivePublicKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex) (*btcec.PublicKey, error) {
+func DeriveBitcoinPublicKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex) (*btcec.PublicKey, error) {
 	child, err := hdNode.Child(index.ToUint32())
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive child for index %d: %v", index, err)
@@ -88,7 +88,7 @@ func DerivePublicKey(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationInde
 	return pubKey, nil
 }
 
-func DeriveAddress(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex, network *chaincfg.Params) (*btcutil.AddressPubKeyHash, error) {
+func DeriveBitcoinAddress(hdNode *hdkeychain.ExtendedKey, index crypto.DerivationIndex, network *chaincfg.Params) (*btcutil.AddressPubKeyHash, error) {
 	child, err := hdNode.Child(index.ToUint32())
 	if err != nil {
 		return nil, fmt.Errorf("failed to derive child for index %d: %v", index, err)
