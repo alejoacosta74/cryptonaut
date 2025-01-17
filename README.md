@@ -91,6 +91,9 @@ Address: 0x6099f0f046D843d6AD6a7daeC35c55b1D92A8cC8
 ### Transaction Management
 
 Decode raw transactions:
+
+- Ethereum
+  
 ```json
 cryptonaut tx decode ethereum f86b01843b9aca00825208941234567890123456789012345678901234567890880de0b6b3a76400008025a0b40bc16dbe93b2fd8698af2cbb2cd10ae64e15a1922d842153cf09fc1f26033da0429b5caf480e7840843f9451bd8f5cbb14f6cebb081dabfe6663c88dbfa56f8b
 
@@ -106,7 +109,31 @@ cryptonaut tx decode ethereum f86b01843b9aca008252089412345678901234567890123456
     "type": 0
 }
 ```
+- Bitcoin
 
+```json
+cryptonaut tx decode bitcoin 010000000134129078563412907856341290785634129078563412907856341290785634120000000000ffffffff0100e1f505000000001976a914bade2cc53d518a756148ca179894efba4089a44888ac00000000
+{
+    "hash": "a378a99a0a32f789cea579179db4fe697375baa0436adcc053724a07bb254f4e",
+    "version": 1,
+    "locktime": 0,
+    "size": 85,
+    "inputs": [
+        {
+            "txid": "1234567890123456789012345678901234567890123456789012345678901234",
+            "vout": 0,
+            "scriptSig": "",
+            "sequence": 4294967295
+        }
+    ],
+    "outputs": [
+        {
+            "value": 100000000,
+            "scriptPubKey": "76a914bade2cc53d518a756148ca179894efba4089a44888ac"
+        }
+    ]
+}
+```
 ## Roadmap 🗺️
 
 ### Coming Soon
