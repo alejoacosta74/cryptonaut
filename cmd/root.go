@@ -24,6 +24,7 @@ package cmd
 import (
 	"os"
 
+	"github.com/alejoacosta74/cryptonaut/internal/config"
 	"github.com/alejoacosta74/go-logger"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -54,6 +55,10 @@ func Execute() {
 func init() {
 	rootCmd.PersistentFlags().StringP("log-level", "l", "info", "Logging level")
 	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
+
+	rootCmd.PersistentFlags().String(config.FlagChain, "", "Chain used for operations [bitcoin, ethereum, cosmos]")
+	rootCmd.MarkPersistentFlagRequired(config.FlagChain)
+	viper.BindPFlag(config.FlagChain, rootCmd.PersistentFlags().Lookup(config.FlagChain))
 }
 
 func runPersistentPreRun(cmd *cobra.Command, args []string) {

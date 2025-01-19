@@ -4,7 +4,7 @@ Your Swiss Army Knife for Blockchain and Cryptocurrency Operations
 
 ## Overview
 
-Cryptonaut is a powerful command-line tool that provides a comprehensive suite of cryptocurrency and blockchain utilities. Whether you're working with Bitcoin, Ethereum, or exploring cryptographic operations, Cryptonaut has got you covered.
+Cryptonaut is a powerful command-line tool that provides a comprehensive suite of cryptocurrency and blockchain utilities. Whether you're working with Bitcoin, Ethereum, Cosmos, or exploring cryptographic operations, Cryptonaut has got you covered.
 
 ## Features
 
@@ -42,6 +42,10 @@ Private key: Ky4LV32SbdWQv8uDsvtguVFEbxSBSRG1Rk2mz6DDWzb4uTgU9tJg
 # For testnet
 cryptonaut generate key --format wif --testnet
 Private key: cRYDPznKNZPv2JVcYpWQXc6Zfkn68N22S259NqDPNJ4Pe2Nzdm7C
+
+# For Cosmos
+cryptonaut generate key --chain cosmos
+Private key: 40f7e0554bff74bfa6aaa683a3f4e4d46078ddc2236a6a7d3fa8da3bb935f0c33ebe56d08b3ab805843ad7887943552f2233e25c13599e4c39bd805c69420f3e
 ```
 
 Derive addresses:
@@ -53,6 +57,10 @@ Address: 1EjXB4qohumD9Tbk4NMekqCkLz1baWChNW
 # Bitcoin address from WIF
 cryptonaut derive address --key KzoCR5BTboQXqG9ah8HiHtigrK2DkrpgouYg94m4ZRWiCVEybGoy --chain bitcoin 
 Address: 1EjXB4qohumD9Tbk4NMekqCkLz1baWChNW
+
+# Cosmos address from hex private key
+cryptonaut derive address --key 40f7e0554bff74bfa6aaa683a3f4e4d46078ddc2236a6a7d3fa8da3bb935f0c33ebe56d08b3ab805843ad7887943552f2233e25c13599e4c39bd805c69420f3e --chain cosmos
+Address: cosmos1cj0w35dgw33spyyat2c3j2mdm9txkh9r2u9zkk
 ```
 
 ### Digital Signatures

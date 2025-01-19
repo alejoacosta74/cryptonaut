@@ -9,6 +9,7 @@ import (
 
 	"github.com/alejoacosta74/cryptonaut/internal/config"
 	"github.com/alejoacosta74/cryptonaut/pkg/bitcoin"
+	"github.com/alejoacosta74/cryptonaut/pkg/cosmos"
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/spf13/cobra"
 )
@@ -86,10 +87,6 @@ func runDeriveAddressCmd(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("invalid chain: %w", err)
 	}
 
-	if chain != "bitcoin" && chain != "ethereum" {
-		return fmt.Errorf("invalid chain: %s", chain)
-	}
-
 	privateKeyHex, err := cmd.Parent().PersistentFlags().GetString(config.FlagPrivateKey)
 	if err != nil {
 		return fmt.Errorf("invalid private key hex: %w", err)
@@ -110,6 +107,12 @@ func runDeriveAddressCmd(cmd *cobra.Command, args []string) error {
 	case "ethereum":
 		// TODO: implement ethereum address derivation
 		cmd.Println("Ethereum address")
+	case "cosmos":
+		address := cosmos.GenerateBech32AddressFromPrivateKeyHex(privateKeyHex)
+		cmd.Println("Cosmos address:", address)
+	default:
+		return fmt.Errorf("invalid chain: %s", chain)
 	}
+
 	return nil
 }
