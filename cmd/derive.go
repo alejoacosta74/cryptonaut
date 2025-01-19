@@ -12,6 +12,7 @@ import (
 	"github.com/alejoacosta74/cryptonaut/pkg/cosmos"
 	"github.com/btcsuite/btcd/btcec/v2"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // deriveCmd represents the derive command
@@ -54,8 +55,8 @@ func init() {
 	deriveCmd.PersistentFlags().String(config.FlagPrivateKey, "", "Private key in hex format")
 	deriveCmd.MarkPersistentFlagRequired(config.FlagPrivateKey)
 
-	deriveAddressCmd.Flags().String(config.FlagChain, "", "Chain to derive the address from [bitcoin, ethereum]")
-	deriveAddressCmd.MarkFlagRequired(config.FlagChain)
+	// add flag to read cosmos address prefix
+	deriveAddressCmd.PersistentFlags().String(config.FlagCosmosAddressPrefix, "cosmos", "Cosmos address prefix")
 
 	deriveAddressCmd.PersistentFlags().Bool(config.FlagTestnet, false, "use Bitcoin testnet")
 
@@ -82,10 +83,7 @@ func runDerivePublicKeyCmd(cmd *cobra.Command, args []string) error {
 }
 
 func runDeriveAddressCmd(cmd *cobra.Command, args []string) error {
-	chain, err := cmd.Flags().GetString(config.FlagChain)
-	if err != nil {
-		return fmt.Errorf("invalid chain: %w", err)
-	}
+	chain := viper.GetString(config.FlagChain)
 
 	privateKeyHex, err := cmd.Parent().PersistentFlags().GetString(config.FlagPrivateKey)
 	if err != nil {
@@ -108,7 +106,15 @@ func runDeriveAddressCmd(cmd *cobra.Command, args []string) error {
 		// TODO: implement ethereum address derivation
 		cmd.Println("Ethereum address")
 	case "cosmos":
-		address := cosmos.GenerateBech32AddressFromPrivateKeyHex(privateKeyHex)
+		cosmosAddressPrefix, err := cmd.PersistentFlags().GetString(config.FlagCosmosAddressPrefix)
+		if err != nil {
+			return fmt.Errorf("invalid cosmos address prefix: %w", err)
+		}
+		config := cosmos.AddressConfig{
+			AccountAddressPrefix: cosmosAddressPrefix,
+			AccountPubKeyPrefix:  cosmosAddressPrefix + "pub",
+		}
+		address := cosmos.GenerateBech32AddressFromPrivateKeyHex(privateKeyHex, config)
 		cmd.Println("Cosmos address:", address)
 	default:
 		return fmt.Errorf("invalid chain: %s", chain)

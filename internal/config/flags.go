@@ -7,9 +7,10 @@ const (
 	FlagConfigFile = "config"
 
 	// Key-related flags
-	FlagPrivateKey       = "key"
-	FlagPrivateKeyFormat = "format"
-	FlagPublicKey        = "pubkey"
+	FlagPrivateKey          = "key"
+	FlagPrivateKeyFormat    = "format"
+	FlagCosmosAddressPrefix = "cosmos-address-prefix"
+	FlagPublicKey           = "pubkey"
 
 	// Operation flags
 	FlagMessage   = "message"

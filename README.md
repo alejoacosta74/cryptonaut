@@ -61,6 +61,10 @@ Address: 1EjXB4qohumD9Tbk4NMekqCkLz1baWChNW
 # Cosmos address from hex private key
 cryptonaut derive address --key 40f7e0554bff74bfa6aaa683a3f4e4d46078ddc2236a6a7d3fa8da3bb935f0c33ebe56d08b3ab805843ad7887943552f2233e25c13599e4c39bd805c69420f3e --chain cosmos
 Address: cosmos1cj0w35dgw33spyyat2c3j2mdm9txkh9r2u9zkk
+
+# Cosmos address from hex private key with custom prefix
+cryptonaut derive address --key 40f7e0554bff74bfa6aaa683a3f4e4d46078ddc2236a6a7d3fa8da3bb935f0c33ebe56d08b3ab805843ad7887943552f2233e25c13599e4c39bd805c69420f3e --chain cosmos --cosmos-address-prefix juno
+Address: juno1cj0w35dgw33spyyat2c3j2mdm9txkh9ruwxe32
 ```
 
 ### Digital Signatures

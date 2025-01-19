@@ -8,18 +8,17 @@ import (
 	"github.com/cosmos/cosmos-sdk/types"
 )
 
-var config *types.Config
+// AddressConfig holds the configuration for address generation
+type AddressConfig struct {
+	AccountAddressPrefix string
+	AccountPubKeyPrefix  string
+}
 
-const (
-	Bech32PrefixAccAddr = "cosmos"
-	Bech32PrefixAccPub  = "cosmospub"
-)
-
-func init() {
-	// Set the Bech32 prefix for Cosmos Hub
-	config = types.GetConfig()
-	config.SetBech32PrefixForAccount(Bech32PrefixAccAddr, Bech32PrefixAccPub)
-	config.Seal()
+// SetupPrefixes configures the global SDK configuration with the given prefix
+func SetupPrefixes(config AddressConfig) {
+	sdkConfig := types.GetConfig()
+	sdkConfig.SetBech32PrefixForAccount(config.AccountAddressPrefix, config.AccountPubKeyPrefix)
+	sdkConfig.Seal()
 }
 
 func GeneratePrivateKey() *ed25519.PrivKey {
@@ -31,16 +30,17 @@ func GeneratePublicKey(privKey *ed25519.PrivKey) cryptotypes.PubKey {
 	return privKey.PubKey()
 }
 
-func GenerateBech32Address(pubKey cryptotypes.PubKey) string {
+func GenerateBech32Address(pubKey cryptotypes.PubKey, config AddressConfig) string {
+	SetupPrefixes(config)
 	address := types.AccAddress(pubKey.Address())
 	return address.String()
 }
 
-func GenerateBech32AddressFromPrivateKeyHex(privKeyHex string) string {
+func GenerateBech32AddressFromPrivateKeyHex(privKeyHex string, config AddressConfig) string {
 	privKeyBytes, err := hex.DecodeString(privKeyHex)
 	if err != nil {
 		return ""
 	}
 	privKey := ed25519.PrivKey{Key: privKeyBytes}
-	return GenerateBech32Address(GeneratePublicKey(&privKey))
+	return GenerateBech32Address(GeneratePublicKey(&privKey), config)
 }

@@ -56,6 +56,7 @@ func init() {
 
 	generatePrivateKeyCmd.Flags().StringP(config.FlagPrivateKeyFormat, "f", "hex", "Private key format (hex|wif)")
 	generatePrivateKeyCmd.Flags().BoolP(config.FlagTestnet, "t", false, "Generate a private key for the testnet network")
+
 	rootCmd.AddCommand(generateCmd)
 }
 
