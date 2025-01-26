@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/alejoacosta74/cryptonaut/tx"
+	"github.com/alejoacosta74/cryptonaut/pkg/tx"
 	"github.com/spf13/cobra"
 )
 

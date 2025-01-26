@@ -146,6 +146,14 @@ cryptonaut tx decode bitcoin 010000000134129078563412907856341290785634129078563
     ]
 }
 ```
+
+### Subscription
+
+Subscribe to mempool transactions:
+```bash
+cryptonaut subscribe mempool --chain ethereum --to-address 0x0000000000000000000000000000000000000000 --ws-url wss://mainnet.infura.io/ws/v3/YOUR_PROJECT_ID
+```
+
 ## Roadmap 🗺️
 
 ### Coming Soon
@@ -156,7 +164,6 @@ cryptonaut tx decode bitcoin 010000000134129078563412907856341290785634129078563
 - [ ] Vanity address generation
 - [ ] Smart contract deployment and interaction
 - [ ] ERC-20 and ERC-721 token operations
-- [ ] Merkle tree utilities
 - [ ] Proof-of-Work simulation
 - [ ] Secure storage for crypto artifacts
 
@@ -164,7 +171,6 @@ cryptonaut tx decode bitcoin 010000000134129078563412907856341290785634129078563
 - [ ] Support for additional blockchain networks
 - [ ] Advanced transaction building features
 - [ ] Multi-signature wallet support
-- [ ] Integration with popular blockchain APIs
 - [ ] Support for additional signature schemes
 
 ## Contributing
