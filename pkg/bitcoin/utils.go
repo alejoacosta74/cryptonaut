@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"strings"
 
-	"github.com/btcsuite/btcd/btcec"
+	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcutil"
 	"github.com/btcsuite/btcd/chaincfg"
-	"github.com/btcsuite/btcutil"
 )
 
 func getChainParams(testnet bool) *chaincfg.Params {
@@ -43,6 +43,6 @@ func isHex(privKey string) bool {
 		return false
 	}
 
-	priv, _ := btcec.PrivKeyFromBytes(btcec.S256(), b)
+	priv, _ := btcec.PrivKeyFromBytes(b)
 	return priv != nil
 }

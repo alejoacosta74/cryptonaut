@@ -57,8 +57,23 @@ func init() {
 	viper.BindPFlag("log-level", rootCmd.PersistentFlags().Lookup("log-level"))
 
 	rootCmd.PersistentFlags().String(config.FlagChain, "", "Chain used for operations [bitcoin, ethereum, cosmos]")
-	rootCmd.MarkPersistentFlagRequired(config.FlagChain)
 	viper.BindPFlag(config.FlagChain, rootCmd.PersistentFlags().Lookup(config.FlagChain))
+
+	// flag for private key
+	rootCmd.PersistentFlags().String(config.FlagPrivateKey, "", "Private key in hex format")
+	viper.BindPFlag(config.FlagPrivateKey, rootCmd.PersistentFlags().Lookup(config.FlagPrivateKey))
+
+	// flag for public key
+	rootCmd.PersistentFlags().String(config.FlagPublicKey, "", "Public key in hex format")
+	viper.BindPFlag(config.FlagPublicKey, rootCmd.PersistentFlags().Lookup(config.FlagPublicKey))
+
+	// flag for signature
+	rootCmd.PersistentFlags().String(config.FlagSignature, "", "Signature in hex format")
+	viper.BindPFlag(config.FlagSignature, rootCmd.PersistentFlags().Lookup(config.FlagSignature))
+
+	// flag for public key compression
+	rootCmd.PersistentFlags().Bool(config.FlagPubKeyCompressed, true, "Compressed / uncompressed  public key")
+	viper.BindPFlag(config.FlagPubKeyCompressed, rootCmd.PersistentFlags().Lookup(config.FlagPubKeyCompressed))
 }
 
 func runPersistentPreRun(cmd *cobra.Command, args []string) {

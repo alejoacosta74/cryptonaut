@@ -7,10 +7,11 @@ const (
 	FlagConfigFile = "config"
 
 	// Key-related flags
-	FlagPrivateKey          = "key"
+	FlagPrivateKey          = "private-key"
 	FlagPrivateKeyFormat    = "format"
 	FlagCosmosAddressPrefix = "cosmos-address-prefix"
-	FlagPublicKey           = "pubkey"
+	FlagPublicKey           = "public-key"
+	FlagPubKeyCompressed    = "compressed"
 
 	// Operation flags
 	FlagMessage   = "message"
@@ -22,10 +23,18 @@ const (
 	FlagTestnet  = "testnet"
 	FlagNetwork  = "network"
 	FlagEndpoint = "endpoint"
+	FlagWsUrl    = "ws-url"
 
 	// BIP44 derivation flags
 	FlagMnemonic = "mnemonic"
 	FlagIndex    = "index"
+
+	// Bitcoin flags
+	FlagBitcoinFormat = "bitcoin-format"
+
+	// ECDSA flags
+	FlagSignatureR = "r"
+	FlagSignatureS = "s"
 )
 
 // Flag default values
