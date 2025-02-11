@@ -17,6 +17,10 @@ func GeneratePrivateKey() (*ecdsa.PrivateKey, error) {
 	return crypto.GenerateKey()
 }
 
+func ParsePrivateKeyFromString(privateKey string) (*ecdsa.PrivateKey, error) {
+	return crypto.HexToECDSA(privateKey)
+}
+
 func DerivePublicKey(privateKey *ecdsa.PrivateKey) (*ecdsa.PublicKey, error) {
 	return privateKey.Public().(*ecdsa.PublicKey), nil
 }

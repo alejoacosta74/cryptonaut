@@ -75,6 +75,28 @@ Public key: 03709cea5a5fb840d2d5c85b76db27f5f5969693140ac5e9d904914fc891129b7f
 cryptonaut bitcoin address --private-key 5887c2df0c75bc44dd1e33f3f45c08f39a0970a8fda69f1aa241831ee983dc71
 Address: 1P3Ykb3ZZnEMKAhb6NhW4Lex7h24qdfwuH
 ```
+#### Ethereum
+
+- Generate a new private key:
+
+```bash
+cryptonaut ethereum generate
+Private Key: 45b4314b4f5964ed2b6030909da0fdd7bcf8e653dfef438233ea45b1b59f0d0f
+```
+
+- Get the public key from a private key
+
+```bash
+cryptonaut ethereum pubkey --private-key 45b4314b4f5964ed2b6030909da0fdd7bcf8e653dfef438233ea45b1b59f0d0f
+Public Key: 907e5d2b3c5e4cdef69a8c547aa1280df55ed82903475ca10f035c1c4bd27bd2
+```
+
+- Get the address from a private key
+
+```bash
+cryptonaut ethereum address --private-key 45b4314b4f5964ed2b6030909da0fdd7bcf8e653dfef438233ea45b1b59f0d0f
+Address: 0x6e91d895Cd7c010fbA616260FeCe1FC1d4AA4a85
+```
 
 ### Managing keys and digital Signatures
 
