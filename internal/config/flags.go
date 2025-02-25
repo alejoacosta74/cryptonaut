@@ -35,6 +35,12 @@ const (
 	// ECDSA flags
 	FlagSignatureR = "r"
 	FlagSignatureS = "s"
+
+	// ZK flags
+	FlagCircuit   = "circuit"
+	FlagProof     = "proof"
+	FlagVk        = "vk" // verification key
+	FlagBirthYear = "birth-year"
 )
 
 // Flag default values

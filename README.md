@@ -13,6 +13,7 @@ Cryptonaut is a powerful command-line tool that provides a comprehensive suite o
 - 👛 HD Wallet Support (BIP44)
 - 📝 Transaction Management
 - 🔗 Blockchain Node Interaction*
+- ⚡ Zero-Knowledge Proofs
 - 🎯 Vanity Address Generation*
 - 🌳 Merkle Tree Operations*
 - ⛏️ PoW Simulation*
@@ -244,6 +245,31 @@ Subscribe to mempool transactions:
 ```bash
 cryptonaut ethereum tx mempool --to-address 0x0000000000000000000000000000000000000000 --ws-url wss://mainnet.infura.io/ws/v3/YOUR_PROJECT_ID
 ```
+
+### Zero-Knowledge Proofs
+
+Cryptonaut supports zero-knowledge proofs using the Groth16 proving system. Currently implemented circuits:
+
+#### Age Verification Circuit
+
+Prove that you're above a certain age (default 18) without revealing your birth year:
+
+```bash
+# Generate a proof that you're over 18 (using birth year 1990)
+cryptonaut zk snark prove --circuit age --birth-year 1990
+INFO[0000] ✅ Proof successfully generated and saved in file proof.data, and verification key in file vk.data
+
+# Verify the proof
+cryptonaut zk snark verify --circuit age
+INFO[0000] 🔍 Verifying proof from file proof.data using verification key from file vk.data 
+INFO[0000] ✅ Proof verification result: true
+```
+
+The age verification circuit:
+- Allows proving you're over 18 without revealing your actual birth year
+- Uses the Groth16 proving system on the BN254 curve
+- Generates both a proof and a verification key
+- Supports verification by any third party using the verification key
 
 ## Roadmap 🗺️
 
